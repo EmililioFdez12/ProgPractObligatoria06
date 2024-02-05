@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Elemento raiz del documento -->
+<biblioteca>
+  <!-- usuarios representa la lista de usuarios. Contiene uno o mas usuario -->
+	<usuarios>
+		<!-- El elemento usuario representa los datos de un usuario -->
+		<usuario id="paco" nombre="Pako Makako" />
+		<usuario id="paqui" nombre="Paqui Makaki" />
+		<usuario id="lukas" nombre="Lukas Grijander" />
+	</usuarios>
+	<!-- tarjetas es la lista de tarjetas contiene una o mas tarjeta -->
+	<tarjetas>
+		<!-- El elemento tarjeta representa la información de una tarjeta -->
+		<!-- usuario contiene el nombre del usuario al que pertenece la tarjeta -->
+		<tarjeta usuario="paco">
+			<!-- fila contiene las celdas de una fila de la tarjeta de claves -->
+			<fila>
+				<!-- celda contiene una clave -->
+				<celda>345</celda>
+				<celda>571</celda>
+				<celda>705</celda>
+				<celda>898</celda>
+				<celda>932</celda>
+			</fila>
+			<fila>
+				<celda>196</celda>
+				<celda>372</celda>
+				<celda>507</celda>
+				<celda>784</celda>
+				<celda>968</celda>
+			</fila>
+			<fila>
+				<celda>161</celda>
+				<celda>180</celda>
+				<celda>308</celda>
+				<celda>874</celda>
+				<celda>989</celda>
+			</fila>
+		</tarjeta>
+		<tarjeta usuario="paqui">
+			<fila>
+				<celda>369</celda>
+				<celda>596</celda>
+				<celda>656</celda>
+				<celda>973</celda>
+				<celda>982</celda>
+			</fila>
+			<fila>
+				<celda>003</celda>
+				<celda>016</celda>
+				<celda>354</celda>
+				<celda>844</celda>
+				<celda>940</celda>
+			</fila>
+			<fila>
+				<celda>247</celda>
+				<celda>432</celda>
+				<celda>536</celda>
+				<celda>855</celda>
+				<celda>867</celda>
+			</fila>
+		</tarjeta>
+		<tarjeta usuario="lukas">
+			<fila>
+				<celda>186</celda>
+				<celda>516</celda>
+				<celda>525</celda>
+				<celda>530</celda>
+				<celda>567</celda>
+				<celda>928</celda>
+			</fila>
+			<fila>
+				<celda>122</celda>
+				<celda>137</celda>
+				<celda>195</celda>
+				<celda>564</celda>
+				<celda>649</celda>
+				<celda>785</celda>
+			</fila>
+			<fila>
+				<celda>009</celda>
+				<celda>186</celda>
+				<celda>213</celda>
+				<celda>300</celda>
+				<celda>429</celda>
+				<celda>629</celda>
+			</fila>
+			<fila>
+				<celda>208</celda>
+				<celda>321</celda>
+				<celda>475</celda>
+				<celda>505</celda>
+				<celda>770</celda>
+				<celda>831</celda>
+			</fila>
+		</tarjeta>
+	</tarjetas>
+	<!-- clientes contiene la lista de clientes (cero o mas cliente) -->
+	<clientes>
+		<!-- cliente representa la información de un cliente -->
+		<!-- El atributo usuario contiene el nombre del usuario al que pertenece el cliente -->
+		<cliente usuario="paco">
+			<!-- nombre contiene el nombre de pila del cliente -->
+			<nombre>Juan Carlos</nombre>
+			<!-- apellidos contiene los apellidos del cliente -->
+			<apellidos>Contreras Gomez</apellidos>
+			<!-- dni contiene el DNI del cliente -->
+			<dni>11294752G</dni>
+			<!-- edad contiene la edad del cliente -->
+			<edad>36</edad>
+		</cliente>
+		<cliente usuario="paco">
+			<nombre>Maria del Carmen</nombre>
+			<apellidos>Herrera Iglesias</apellidos>
+			<dni>48129735G</dni>
+			<edad>65</edad>
+		</cliente>
+		<cliente usuario="paco">
+			<nombre>Diego</nombre>
+			<apellidos>Jimenez Lopez</apellidos>
+			<edad>21</edad>
+			<dni>76211879E</dni>
+		</cliente>
+		<cliente usuario="paqui">
+			<dni>11294752G</dni>
+			<nombre>Jimena</nombre>
+			<apellidos>Marquez Navarro</apellidos>
+			<edad>45</edad>
+		</cliente>
+		<cliente usuario="paqui">
+			<nombre>Honorato</nombre>
+			<dni>86368431G</dni>
+			<apellidos>Ortiz Pacheco</apellidos>
+			<edad>39</edad>
+		</cliente>
+		<cliente usuario="lukas">
+			<nombre>Amanda Eva</nombre>
+			<apellidos>Quiron Ramirez</apellidos>
+			<dni>60500100A</dni>
+			<edad>27</edad>
+		</cliente>
+		<cliente usuario="lukas">
+			<nombre>Patricio</nombre>
+			<apellidos>Sanchez Teruel</apellidos>
+			<edad>48</edad>
+			<dni>53282236E</dni>
+		</cliente>
+		<cliente usuario="lukas">
+			<dni>93454147H</dni>
+			<nombre>Gabriela Desiree</nombre>
+			<apellidos>Urkullu Vazquez</apellidos>
+			<edad>75</edad>
+		</cliente>
+		<cliente usuario="lukas">
+			<nombre>Joaquin</nombre>
+			<dni>86403183A</dni>
+			<apellidos>Zamora Azar</apellidos>
+			<edad>52</edad>
+		</cliente>
+	</clientes>
+</biblioteca>
