@@ -1,18 +1,13 @@
 package prog.ud06.actividad611.coleccion;
 
-import java.util.ArrayList;
-import java.util.List;
+import prog.ud06.actividad611.coleccion.diccionario.Diccionario;
 
 public class Usuarios {
-  private List<Usuario> listaUsuarios;
-  private Usuario usuario1;
-  private String nombreUsuario;
-  private String nombreCompleto;
-  private TarjetaClaves tarjeta;
-  private List<Cliente> clientes;
+
+  private Diccionario<Usuario> diccionarioUsuarios;
 
   public Usuarios() {
-    this.listaUsuarios = new ArrayList<Usuario>();
+    this.diccionarioUsuarios = new Diccionario<Usuario>();
   }
 
   public void addUsuario(Usuario usuario) {
@@ -20,18 +15,16 @@ public class Usuarios {
       throw new IllegalArgumentException();
     }
     
-   
-    if (usuario.getNombreUsuario().equals(usuario1.getNombreUsuario())) {
+    if (diccionarioUsuarios.contieneNombre(usuario.getNombreUsuario())) {
       throw new UsuariosException();
     } else {
-      listaUsuarios.add(usuario);
+      diccionarioUsuarios.add(usuario.getNombreUsuario(), usuario);
     }
-    
+
   }
 
-  public Usuario getUsuarioPorNombreUsuario(String nombresUsuario) {
-    return null;
-
+  public Usuario getUsuarioPorNombreUsuario(String nombreUsuario) {
+    return diccionarioUsuarios.getEntrada(nombreUsuario);
   }
 
 }
