@@ -89,8 +89,8 @@ public class Cliente implements Comparable<Cliente> {
         int resto = numerosDni % 23;
         // Letras posibles en cada posicion segun su resto
         // Es decir si el resto es 1 la letra deberia ser T
-        char[] letrasPosibles = {'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V',
-                'H', 'L', 'C', 'K', 'E'};
+        char[] letrasPosibles = {'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 
+                                 'N', 'J', 'Z', 'S','Q' , 'V', 'H', 'L', 'C', 'K', 'E'};
 
         if (letrasPosibles[resto] == letraDni) {
             valida = true;
