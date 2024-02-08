@@ -27,48 +27,39 @@ public class ProveedorUsuariosArchivoXML implements ProveedorUsuarios {
 
   @Override
   public Usuarios obtieneUsuarios() throws ProveedorUsuariosException {
-    // Obtiene información Usuario
-    Usuarios usuarios = new Usuarios();
-    List<Usuario> listaUsuarios = inicioUsuarioXML(rutaArchivo);
-
-    // Para cada usuario obtenemos su tarjeta y sus clientes
-    for (Usuario usuario : listaUsuarios) {
-      TarjetaClaves tarjeta = new TarjetaClaves(1, 1);
-      List<Cliente> clientes = inicioClientesUsuariosXML(rutaArchivo, usuario.getNombreUsuario());
-
-      // Creamos un nuevo objeto Usuario con la tarjeta y clientes obtenidos
-      Usuario usuarioConInfo = new Usuario(usuario.getNombreUsuario(), usuario.getNombreCompleto(), tarjeta, clientes);
-      usuarios.addUsuario(usuarioConInfo);
-    }
-    return usuarios;
+    Usuarios usuariosObtenidos = inicioUsuarioXML(rutaArchivo);
+    return usuariosObtenidos;
   }
 
-  private List<Usuario> inicioUsuarioXML(String archivo) throws ProveedorUsuariosException {
-    List<Usuario> listaUsuarios = new ArrayList<>();
+  private Usuarios inicioUsuarioXML(String archivo) throws ProveedorUsuariosException {
+    Usuarios usuarios = new Usuarios();
     try {
       // Accedemos al Documento
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document documento = builder.parse(archivo);
       // Obtenemos los elementos de tipo usuario
       NodeList listadoUsuariosXML = documento.getElementsByTagName("usuario");
-      // Para cada elemento del documento
       for (int i = 0; i < listadoUsuariosXML.getLength(); i++) {
-        Element usuarioElemento = (Element) listadoUsuariosXML.item(i);
-        // Obtenemos el id y el nombre de usuario
-        String nombreUsuario = usuarioElemento.getAttribute("id");
-        String nombreCompleto = usuarioElemento.getAttribute("nombre");
+        Element usuarioElement = (Element) listadoUsuariosXML.item(i);
+        String idUsuario = usuarioElement.getAttribute("id");
+        String nombreCompleto = usuarioElement.getAttribute("nombre");
+        // Si el usuario de la tarjeta es igual al Usuario se crea un usuario.
+        TarjetaClaves tarjeta = setTarjetaXML(archivo, idUsuario);
+        List<Cliente> clientes = setCliente(archivo, idUsuario);
 
-        Usuario usuario = new Usuario(nombreUsuario, nombreCompleto, null, null);
-        listaUsuarios.add(usuario);
+        if (tarjeta != null && clientes != null && !clientes.isEmpty()) {
+          Usuario usuario = new Usuario(idUsuario, nombreCompleto, tarjeta, clientes);
+          usuarios.addUsuario(usuario);
+        }
       }
     } catch (Exception e) {
       throw new ProveedorUsuariosException();
     }
-    return listaUsuarios;
+    return usuarios;
   }
 
-  private TarjetaClaves inicioTarjetasXML(String archivo, String nombreUsuario)
-      throws ProveedorUsuariosException {
+  private TarjetaClaves setTarjetaXML(String archivo, String nombreUsuario) throws ProveedorUsuariosException {
+    TarjetaClaves tarjetaUsuario = null; // Declarar la tarjeta fuera del ciclo
     try {
       // Accedemos al Documento
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -77,46 +68,59 @@ public class ProveedorUsuariosArchivoXML implements ProveedorUsuarios {
       NodeList listaTarjetas = documento.getElementsByTagName("tarjeta");
       // Para cada elemento del documento
       for (int i = 0; i < listaTarjetas.getLength(); i++) {
-        Element tarjeta = (Element) listaTarjetas.item(i);
-        String usuarioId = tarjeta.getAttribute("usuario");
-        if (usuarioId.equals(nombreUsuario)) {
-          NodeList listaFilas = tarjeta.getElementsByTagName("fila");
+        Element tarjetaElement = (Element) listaTarjetas.item(i);
+        String usuarioTarjeta = tarjetaElement.getAttribute("usuario");
+        if (usuarioTarjeta.equals(nombreUsuario)) {
+          NodeList listaFilas = tarjetaElement.getElementsByTagName("fila"); // Corregir el acceso a las filas
           int filas = listaFilas.getLength();
           int columnas = ((Element) listaFilas.item(0)).getElementsByTagName("celda").getLength();
-          return new TarjetaClaves(filas, columnas);
+
+          tarjetaUsuario = new TarjetaClaves(filas, columnas); // Asignar la tarjeta creada
         }
       }
     } catch (Exception e) {
       throw new ProveedorUsuariosException();
     }
-    return null;
+    return tarjetaUsuario;
   }
 
-  private List<Cliente> inicioClientesUsuariosXML(String archivo, String nombreUsuario)
-      throws ProveedorUsuariosException {
-    List<Cliente> clientes = new ArrayList<>();
+  private List<Cliente> setCliente(String archivo, String nombreUsuario) throws ProveedorUsuariosException {
+    List<Cliente> listaClientes = new ArrayList<>();
     try {
       // Accedemos al Documento
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document documento = builder.parse(archivo);
       // Obtenemos los elementos de tipo cliente asociados al usuario
-      NodeList listaClientes = documento.getElementsByTagName("cliente");
-      // Para cada elemento del documento
-      for (int i = 0; i < listaClientes.getLength(); i++) {
-        Element cliente = (Element) listaClientes.item(i);
-        String usuarioId = cliente.getAttribute("usuario");
-        if (usuarioId.equals(nombreUsuario)) {
-          String nombre = cliente.getElementsByTagName("nombre").item(0).getTextContent();
-          String dni = cliente.getElementsByTagName("dni").item(0).getTextContent();
-          String apellidos = cliente.getElementsByTagName("apellidos").item(0).getTextContent();
-          int edad = Integer.parseInt(cliente.getElementsByTagName("edad").item(0).getTextContent());
-          Cliente clienteXML = new Cliente(nombre, apellidos, dni, edad);
-          clientes.add(clienteXML);
+      NodeList listaClientesXML = documento.getElementsByTagName("cliente");
+
+      for (int i = 0; i < listaClientesXML.getLength(); i++) {
+        Element clienteElement = (Element) listaClientesXML.item(i);
+        String clienteUsuario = clienteElement.getAttribute("usuario");
+        if (clienteUsuario.equals(nombreUsuario)) {
+          // Obtenemos los elementos hijos de cliente: nombre, apellidos, dni, edad
+          String nombre = obtenerValorElemento(clienteElement, "nombre");
+          String apellidos = obtenerValorElemento(clienteElement, "apellidos");
+          String dni = obtenerValorElemento(clienteElement, "dni");
+          int edad = Integer.parseInt(obtenerValorElemento(clienteElement, "edad"));
+
+          Cliente cliente = new Cliente(nombre, apellidos, dni, edad);
+          listaClientes.add(cliente);
         }
       }
     } catch (Exception e) {
       throw new ProveedorUsuariosException();
     }
-    return clientes;
+    return listaClientes;
+  }
+
+  // Lee los atributos de los elementos
+  private String obtenerValorElemento(Element elementoPadre, String nombreElemento) {
+    // Obtiene el primer elemento hijo con el nombre especificado
+    NodeList nodos = elementoPadre.getElementsByTagName(nombreElemento);
+    if (nodos.getLength() > 0) {
+      return nodos.item(0).getTextContent();
+    } else {
+      return ""; // Devuelve una cadena vacía si el elemento no se encuentra
+    }
   }
 }
