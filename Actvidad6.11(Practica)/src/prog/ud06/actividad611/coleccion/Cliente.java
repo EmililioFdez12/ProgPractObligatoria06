@@ -47,7 +47,6 @@ public class Cliente implements Comparable<Cliente> {
     } else {
       throw new IllegalArgumentException();
     }
-    
 
   }
 
@@ -66,14 +65,14 @@ public class Cliente implements Comparable<Cliente> {
   public int getEdad() {
     return edad;
   }
-  
+
   // Metodo para comprobar si el dni es valido
   private boolean validarDni(String dni) {
     boolean valida = false;
-    
+
     // Si es null o no tiene 9 carácteres devuelve false
     if (dni == null || dni.length() != 9) {
-        return false;
+      return false;
     }
 
     // Saco la cadena de numeros
@@ -82,29 +81,28 @@ public class Cliente implements Comparable<Cliente> {
     char letraDni = dni.charAt(8);
 
     try {
-        // Paso la cadena de numeros a Integer
-        int numerosDni = Integer.parseInt(cadenaNumerosDni);
+      // Paso la cadena de numeros a Integer
+      int numerosDni = Integer.parseInt(cadenaNumerosDni);
 
-        // Segun el resto que de, pertenece a una letra del array, (Estan en orden)
-        int resto = numerosDni % 23;
-        // Letras posibles en cada posicion segun su resto
-        // Es decir si el resto es 1 la letra deberia ser T
-        char[] letrasPosibles = {'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 
-                                 'N', 'J', 'Z', 'S','Q' , 'V', 'H', 'L', 'C', 'K', 'E'};
+      // Segun el resto que de, pertenece a una letra del array, (Estan en orden)
+      int resto = numerosDni % 23;
+      // Letras posibles en cada posicion segun su resto
+      // Es decir si el resto es 1 la letra deberia ser T
+      char[] letrasPosibles = { 'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q',
+          'V', 'H', 'L', 'C', 'K', 'E' };
 
-        if (letrasPosibles[resto] == letraDni) {
-            valida = true;
-        }
+      if (letrasPosibles[resto] == letraDni) {
+        valida = true;
+      }
     } catch (NumberFormatException e) {
-        // Si los 8 primeros caracteres no son números
-        return false;
+      // Si los 8 primeros caracteres no son números
+      return false;
     }
     return valida;
-}
-
+  }
 
   @Override
-  public int compareTo(Cliente o) {
-    return 0;
+  public int compareTo(Cliente otrosApellidos) {
+    return apellidos.compareTo(otrosApellidos.getApellidos());
   }
 }
